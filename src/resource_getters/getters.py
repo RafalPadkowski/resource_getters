@@ -1,7 +1,7 @@
 import importlib.resources
 from importlib.abc import Traversable
 
-from . import state
+from . import config
 
 
 class ResourceGetter:
@@ -9,13 +9,13 @@ class ResourceGetter:
         self.subfolder: str = subfolder
 
     def __call__(self, filename: str) -> Traversable:
-        if state.resource_package is None:
+        if config._resource_package is None:
             raise RuntimeError(
-                "resourcetools.initialize() must be called "
+                "resource_getters.configure() must be called "
                 "before using resource getters"
             )
         return (
-            importlib.resources.files(state.resource_package)
+            importlib.resources.files(config._resource_package)
             / self.subfolder
             / filename
         )
